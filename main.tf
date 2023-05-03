@@ -6,6 +6,18 @@ terraform {
     boundary = {
       source = "hashicorp/boundary"
     }
+    doormat = {
+      source  = "doormat.hashicorp.services/hashicorp-security/doormat"
+      version = ">= 0.0.3"
+    }
+  }
+  cloud {
+    organization = "argocorp"
+    hostname = "app.terraform.io"
+
+    workspaces {
+      name = "hcp-boundary-tf"
+    }
   }
 }
 
@@ -115,3 +127,4 @@ module "vault_server" {
   pg_vault_user = module.postgres.vault_user
   pg_vault_password = module.postgres.vault_password
 }
+
