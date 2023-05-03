@@ -8,11 +8,6 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "aws_vpc_cidr" {
-  type = string
-  default = "10.11.0.0/16"
-}
-
 variable "aws_boundary_worker_instance_type" {
   type = string
   default = "t3.medium"
@@ -49,5 +44,9 @@ variable "admin_ip_additional" {
 }
 
 variable "boundary_cluster_admin_url" {
+  type = string
+}
+
+variable "vpc_id" {
   type = string
 }

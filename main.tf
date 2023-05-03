@@ -10,7 +10,17 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = var.region
+  access_key = data.doormat_aws_credentials.creds.access_key
+  secret_key = data.doormat_aws_credentials.creds.secret_key
+  token      = data.doormat_aws_credentials.creds.token
+}
+
+provider "doormat" {}
+
+data "doormat_aws_credentials" "creds" {
+  provider = doormat
+  role_arn = "arn:aws:iam::325038557378:role/hcp-boundary-tf"
 }
 
 provider "boundary" {
@@ -42,6 +52,7 @@ module "aws_infra" {
   admin_ip_additional = var.admin_ip_additional
   aws_region = var.aws_region
   aws_instance_types = local.aws_instance_types
+  vpc_id = var.vpc_id
 }
 
 module "boundary_worker" {
@@ -75,7 +86,7 @@ module "k8s_cluster" {
   source = "./k8s_cluster"
   unique_name = local.unique_name
   aws_region = var.aws_region
-  aws_vpc = module.aws_infra.aws_vpc
+  aws_vpc = module.aws_infra.vpc_id
   aws_ami = module.aws_infra.aws_ami_ubuntu
   boundary_cluster_admin_url = var.boundary_cluster_admin_url
   boundary_instance_worker_addr = "${module.boundary_setup.boundary_worker_dns_public}:9202"
