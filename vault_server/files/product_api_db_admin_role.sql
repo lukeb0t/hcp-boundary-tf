@@ -1,0 +1,1 @@
+CREATE ROLE "{{name}}" WITH SUPERUSER LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
