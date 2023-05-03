@@ -98,7 +98,7 @@ module "k8s_cluster" {
   source = "./k8s_cluster"
   unique_name = local.unique_name
   aws_region = var.aws_region
-  aws_vpc = module.aws_infra.vpc_id
+  vpc_id = var.vpc_id
   aws_ami = module.aws_infra.aws_ami_ubuntu
   boundary_cluster_admin_url = var.boundary_cluster_admin_url
   boundary_instance_worker_addr = "${module.boundary_worker.boundary_worker_dns_public}:9202"
@@ -108,7 +108,7 @@ module "k8s_cluster" {
   k8s_boundary_worker_lb_subnet_id = module.aws_infra.aws_subnet_public_id
   k8s_boundary_worker_lb_secgroup_id = module.aws_infra.aws_secgroup_public_id
   k8s_ssh_keypair = module.aws_infra.aws_ssh_keypair_app_infra
-  k8s_nodeport_lb_vpc = module.aws_infra.aws_vpc
+  k8s_nodeport_lb_vpc = var.vpc_id
 }
 
 module "vault_server" {
@@ -121,7 +121,7 @@ module "vault_server" {
   vault_subnet_id = module.aws_infra.aws_subnet_private_id
   vault_secgroup_id = module.aws_infra.aws_secgroup_private_id
   vault_ssh_keypair = module.aws_infra.aws_ssh_keypair_app_infra
-  vault_lb_vpc = module.aws_infra.aws_vpc
+  vault_lb_vpc = var.vpc_id
   create_postgres = var.create_postgres
   postgres_server = module.postgres.dns
   pg_vault_user = module.postgres.vault_user
