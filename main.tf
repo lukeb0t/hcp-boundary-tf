@@ -72,7 +72,7 @@ module "boundary_worker" {
   source = "./boundary_worker"
   unique_name = local.unique_name
   aws_region = var.aws_region
-  aws_vpc = module.aws_infra.vpc_id
+  aws_vpc = var.vpc_id
   aws_ami = module.aws_infra.aws_ami_ubuntu
   aws_public_secgroup_id = module.aws_infra.aws_secgroup_public_id
   app_infra_ssh_privkey = module.aws_infra.app_infra_ssh_privkey
