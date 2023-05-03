@@ -50,3 +50,16 @@ variable "boundary_cluster_admin_url" {
 variable "vpc_id" {
   type = string
 }
+
+variable "boundary_auth_method_id" {
+  type = string  
+}
+
+variable "boundary_admin" {
+  description = "boundary admin user ID"
+  type = string
+}
+
+variable "boundary_admin_pw" {
+  type = string
+}
