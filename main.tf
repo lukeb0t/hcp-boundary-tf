@@ -37,6 +37,9 @@ data "doormat_aws_credentials" "creds" {
 
 provider "boundary" {
   addr = var.boundary_cluster_admin_url
+  auth_method_id                  = var.boundary_auth_method_id
+  password_auth_method_login_name = var.boundary_admin          
+  password_auth_method_password   = var.boundary_admin_pw   
 }
 
 data "http" "admin_ip_dyn" {
