@@ -11,7 +11,7 @@ terraform {
 
 resource "aws_security_group" "boundary_demo_worker_inet" {
   name = "${var.unique_name}-inet"
-  vpc_id = var.aws_vpc
+  vpc_id = var.vpc_id
   ingress {
     description = "Unrestricted Internet access"
     from_port   = 9202

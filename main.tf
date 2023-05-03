@@ -42,15 +42,14 @@ module "aws_infra" {
   admin_ip_additional = var.admin_ip_additional
   aws_region = var.aws_region
   aws_instance_types = local.aws_instance_types
-  aws_vpc_cidr = var.aws_vpc_cidr
 }
 
-module "boundary_setup" {
+module "boundary_worker" {
   depends_on = [ module.aws_infra ]
   source = "./boundary_setup"
   unique_name = local.unique_name
   aws_region = var.aws_region
-  aws_vpc = module.aws_infra.aws_vpc
+  aws_vpc = module.aws_infra.vpc_id
   aws_ami = module.aws_infra.aws_ami_ubuntu
   aws_public_secgroup_id = module.aws_infra.aws_secgroup_public_id
   app_infra_ssh_privkey = module.aws_infra.app_infra_ssh_privkey

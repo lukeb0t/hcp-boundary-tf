@@ -54,27 +54,25 @@ resource "local_file" "aws_infra_ssh_privkey" {
   file_permission = "0600"
 }
 
-resource "aws_vpc" "boundary_demo" {
-  cidr_block           = var.aws_vpc_cidr
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+data "aws_vpc" "selected" {
+  id = var.vpc_id
 }
 
 resource "aws_subnet" "boundary_demo_private" {
-  vpc_id            = aws_vpc.boundary_demo.id
-  cidr_block        = cidrsubnet(aws_vpc.boundary_demo.cidr_block, 1, 1)
+  vpc_id            = var.vpc_id
+  cidr_block        = cidrsubnet(data.aws_vpc.selected.cidr_block, 1, 1)
   availability_zone = local.usable_azs[0]
 }
 
 resource "aws_subnet" "boundary_demo_public" {
-  vpc_id            = aws_vpc.boundary_demo.id
-  cidr_block        = cidrsubnet(aws_vpc.boundary_demo.cidr_block, 1, 0)
+  vpc_id            = var.vpc_id
+  cidr_block        = cidrsubnet(data.aws_vpc.selected.cidr_block, 1, 0)
   availability_zone = aws_subnet.boundary_demo_private.availability_zone
 }
 
 resource "aws_security_group" "boundary_demo_public" {
   name = "${var.unique_name}-public"
-  vpc_id = aws_vpc.boundary_demo.id
+  vpc_id = var.vpc_id
   ingress {
     description = "Unrestricted admin access"
     from_port   = 0
@@ -93,7 +91,7 @@ resource "aws_security_group" "boundary_demo_public" {
 
 resource "aws_security_group" "boundary_demo_private" {
   name = "${var.unique_name}-private"
-  vpc_id = aws_vpc.boundary_demo.id
+  vpc_id = var.vpc_id
   ingress {
     description = "VPC-local access only"
     from_port   = 0
@@ -111,7 +109,7 @@ resource "aws_security_group" "boundary_demo_private" {
 }
 
 resource "aws_internet_gateway" "boundary_demo" {
-  vpc_id = aws_vpc.boundary_demo.id
+  vpc_id = var.vpc_id
 }
 
 resource "aws_eip" "boundary_demo_nat_gw" {
@@ -125,7 +123,7 @@ resource "aws_nat_gateway" "boundary_demo_private" {
 }
 
 resource "aws_route_table" "boundary_demo_public" {
-  vpc_id = aws_vpc.boundary_demo.id
+  vpc_id = var.vpc_id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -139,7 +137,7 @@ resource "aws_route_table_association" "boundary_demo_public" {
 }
 
 resource "aws_route_table" "boundary_demo_private" {
-  vpc_id = aws_vpc.boundary_demo.id
+  vpc_id = var.vpc_id
 
   route {
     cidr_block = "0.0.0.0/0"

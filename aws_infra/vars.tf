@@ -22,7 +22,6 @@ variable "aws_instance_types" {
   type = list(string)
 }
 
-variable "aws_vpc_cidr" {
+variable "vpc_id" {
   type = string
-  default = "10.11.0.0/16"
 }
