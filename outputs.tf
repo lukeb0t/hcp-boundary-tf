@@ -40,12 +40,12 @@ output "aws_secgroup_private" {
 
 output "boundary_worker_ip_public" {
   description = "The public IP of the Boundary worker."
-  value = module.boundary_setup.boundary_worker_ip_public
+  value = module.boundary_worker.boundary_worker_ip_public
 }
 
 output "boundary_worker_dns_public" {
   description = "The public DNS of the Boundary worker."
-  value = module.boundary_setup.boundary_worker_dns_public
+  value = module.boundary_worker.boundary_worker_dns_public
 }
 
 output "postgres_server" {

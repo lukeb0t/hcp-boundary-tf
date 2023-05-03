@@ -3,11 +3,6 @@ output "aws_ami_ubuntu" {
   value = data.aws_ami.ubuntu.id
 }
 
-output "aws_vpc" {
-  description = "The ID of the AWS VPC created for the demo."
-  value = aws_vpc.boundary_demo.id
-}
-
 output "aws_subnet_public_id" {
   description = "The ID of the public subnet created for the demo."
   value = aws_subnet.boundary_demo_public.id
