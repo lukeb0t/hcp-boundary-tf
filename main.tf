@@ -61,10 +61,6 @@ locals {
 }
 
 module "aws_infra" {
-    providers = {
-    aws = aws
-    boundary = boundary
-  }
   source = "./aws_infra"
   unique_name = local.unique_name
   admin_ip = local.admin_ip_result
@@ -75,10 +71,6 @@ module "aws_infra" {
 }
 
 module "boundary_worker" {
-    providers = {
-      aws = aws
-      boundary = boundary
-  }
   depends_on = [ module.aws_infra ]
   source = "./boundary_worker"
   unique_name = local.unique_name
@@ -93,10 +85,6 @@ module "boundary_worker" {
 }
 
 module "postgres" {
-      providers = {
-      aws = aws
-      boundary = boundary
-  }
   depends_on = [ module.aws_infra ]
   source = "./postgres"
   unique_name = local.unique_name
@@ -109,10 +97,6 @@ module "postgres" {
 }
 
 module "k8s_cluster" {
-      providers = {
-      aws = aws
-      boundary = boundary
-  }
   depends_on = [ module.aws_infra, module.boundary_worker ]
   source = "./k8s_cluster"
   unique_name = local.unique_name
@@ -131,9 +115,6 @@ module "k8s_cluster" {
 }
 
 module "vault_server" {
-      providers = {
-      aws = aws
-      boundary = boundary
   }
   depends_on = [ module.postgres, module.k8s_cluster ]
   source = "./vault_server"
