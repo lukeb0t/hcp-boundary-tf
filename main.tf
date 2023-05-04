@@ -115,7 +115,6 @@ module "k8s_cluster" {
 }
 
 module "vault_server" {
-  }
   depends_on = [ module.postgres, module.k8s_cluster ]
   source = "./vault_server"
   unique_name = local.unique_name
