@@ -26,6 +26,17 @@ provider "aws" {
   access_key = data.doormat_aws_credentials.creds.access_key
   secret_key = data.doormat_aws_credentials.creds.secret_key
   token      = data.doormat_aws_credentials.creds.token
+  default_tags {
+   tags = local.tags
+}
+}
+
+locals {
+  tags = {
+    purpose            = "demo environment for Boundary and Vault",
+    workspace          = var.TFC_WORKSPACE_NAME,
+    slug               = var.TFC_WORKSPACE_SLUG
+  }
 }
 
 provider "doormat" {}

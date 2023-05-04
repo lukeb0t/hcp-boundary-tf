@@ -63,3 +63,6 @@ variable "boundary_admin" {
 variable "boundary_admin_pw" {
   type = string
 }
+
+variable "TFC_WORKSPACE_NAME" {}
+variable "TFC_WORKSPACE_SLUG" {}
