@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-    boundary = {
-      source = "hashicorp/boundary"
-    }
-  }
-}
-
 resource "random_pet" "postgres_k8s_admin_password" {
   length = 4
 }

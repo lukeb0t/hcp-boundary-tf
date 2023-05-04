@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
-}
-
 locals {
   cloudinit_config_postgres = {
     write_files = [

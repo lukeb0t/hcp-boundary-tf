@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-    boundary = {
-      source = "hashicorp/boundary"
-    }
-  }
-}
-
 resource "aws_security_group" "boundary_demo_worker_inet" {
   name = "${var.unique_name}-inet"
   vpc_id = var.vpc_id
