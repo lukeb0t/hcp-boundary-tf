@@ -24,3 +24,7 @@ variable "vpc_id" {
 variable "igw_id" {
   type = string
 }
+
+variable "keypair_name" {
+  type = string
+}
