@@ -54,10 +54,6 @@ provider "boundary" {
   password_auth_method_password   = var.boundary_admin_pw   
 }
 
-data "http" "admin_ip_dyn" {
-  url = "http://whatismyip.akamai.com/"
-}
-
 resource "random_pet" "unique_name" {
 }
 
@@ -68,14 +64,12 @@ resource "random_integer" "unique_name" {
 
 locals {
   unique_name = coalesce(var.unique_name, "${random_pet.unique_name.id}-${substr(random_integer.unique_name.result, -6, -1)}")
-  admin_ip_result = "${data.http.admin_ip_dyn.response_body}/32"
   aws_instance_types = [ var.aws_k8s_node_instance_type, var.aws_postgres_node_instance_type, var.aws_vault_node_instance_type ]
 }
 
 module "aws_infra" {
   source = "./aws_infra"
   unique_name = local.unique_name
-  admin_ip = local.admin_ip_result
   admin_ip_additional = var.admin_ip_additional
   aws_region = var.aws_region
   aws_instance_types = local.aws_instance_types

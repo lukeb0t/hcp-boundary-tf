@@ -3,11 +3,6 @@ variable "unique_name" {
   default = ""
 }
 
-variable "admin_ip" {
-  type = string
-  default = ""
-}
-
 variable "admin_ip_additional" {
   type = string
   default = ""

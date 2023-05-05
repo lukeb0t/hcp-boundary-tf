@@ -66,7 +66,7 @@ resource "aws_security_group" "boundary_demo_public" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = compact(flatten([data.aws_vpc.selected.cidr_block, var.admin_ip, var.admin_ip_additional]))
+    cidr_blocks = compact(flatten([data.aws_vpc.selected.cidr_block, var.admin_ip_additional]))
   }
   egress {
     description = "Unrestricted egress"
