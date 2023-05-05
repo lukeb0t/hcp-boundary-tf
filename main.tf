@@ -64,13 +64,14 @@ resource "random_integer" "unique_name" {
 
 locals {
   unique_name = coalesce(var.unique_name, "${random_pet.unique_name.id}-${substr(random_integer.unique_name.result, -6, -1)}")
+  admin_ip_result = "${var.admin_ip}/32"
   aws_instance_types = [ var.aws_k8s_node_instance_type, var.aws_postgres_node_instance_type, var.aws_vault_node_instance_type ]
 }
 
 module "aws_infra" {
   source = "./aws_infra"
   unique_name = local.unique_name
-  admin_ip_additional = var.admin_ip_additional
+  admin_ip = local.admin_ip_result
   aws_region = var.aws_region
   aws_instance_types = local.aws_instance_types
   vpc_id = var.vpc_id

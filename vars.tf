@@ -38,7 +38,7 @@ variable "create_k8s" {
   default = true
 }
 
-variable "admin_ip_additional" {
+variable "admin_ip" {
   type = string
   default = ""
 }
