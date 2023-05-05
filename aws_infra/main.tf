@@ -101,13 +101,13 @@ resource "aws_internet_gateway" "boundary_demo" {
 }
 
 resource "aws_eip" "boundary_demo_nat_gw" {
-  depends_on = [aws_internet_gateway.boundary_demo]
+ # depends_on = [aws_internet_gateway.boundary_demo]
 }
 
 resource "aws_nat_gateway" "boundary_demo_private" {
   allocation_id = aws_eip.boundary_demo_nat_gw.allocation_id
   subnet_id  = aws_subnet.boundary_demo_public.id
-  depends_on = [aws_internet_gateway.boundary_demo]
+  # depends_on = [aws_internet_gateway.boundary_demo]
 }
 
 resource "aws_route_table" "boundary_demo_public" {
