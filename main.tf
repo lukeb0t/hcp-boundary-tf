@@ -33,7 +33,7 @@ provider "aws" {
 }
 
 data "aws_key_pair" "user_keypair" {
-  count = "${var.keypair_name != "" ? 0 : 1}"
+  count = "${var.keypair_name == "" ? 0 : 1}"
   key_name = var.keypair_name
   include_public_key = true
 }
@@ -72,7 +72,7 @@ locals {
   unique_name = coalesce(var.unique_name, "${random_pet.unique_name.id}-${substr(random_integer.unique_name.result, -6, -1)}")
   admin_ip_result = "${var.admin_ip}/32"
   aws_instance_types = [ var.aws_k8s_node_instance_type, var.aws_postgres_node_instance_type, var.aws_vault_node_instance_type ]
-  keypair = "${var.keypair_name != "" ? module.aws_infra.app_infra_ssh_privkey : data.aws_key_pair.user_keypair[0].key_name}"
+  keypair = "${var.keypair_name == "" ? module.aws_infra.app_infra_ssh_privkey : data.aws_key_pair.user_keypair[0].key_name}"
 }
 
 module "aws_infra" {
