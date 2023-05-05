@@ -1,3 +1,9 @@
 - integrate HCP cluster creation
 - go back and fix internet gateway creation issue
+
+
+
+
+Complete
 - add ability to specify a keypair
+- refactor direct resourse access from IP allow list / workstation IP
