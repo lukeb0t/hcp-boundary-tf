@@ -68,10 +68,5 @@ variable "igw_id" {
   type = string
 }
 
-variable "keypair_name" {
-  type = string
-  default = ""
-}
-
 variable "TFC_WORKSPACE_NAME" {}
 variable "TFC_WORKSPACE_SLUG" {}

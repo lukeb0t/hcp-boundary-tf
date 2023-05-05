@@ -32,11 +32,11 @@ provider "aws" {
 }
 }
 
-data "aws_key_pair" "user_keypair" {
-  count = "${var.keypair_name == "" ? 0 : 1}"
-  key_name = var.keypair_name
-  include_public_key = true
-}
+# # if keypair variable string is not null, import the existing named keypair
+# data "aws_key_pair" "user_keypair" {
+#   key_name = var.keypair_name
+#   include_public_key = true
+# }
 
 locals {
   tags = {
@@ -72,7 +72,8 @@ locals {
   unique_name = coalesce(var.unique_name, "${random_pet.unique_name.id}-${substr(random_integer.unique_name.result, -6, -1)}")
   admin_ip_result = "${var.admin_ip}/32"
   aws_instance_types = [ var.aws_k8s_node_instance_type, var.aws_postgres_node_instance_type, var.aws_vault_node_instance_type ]
-  keypair = "${var.keypair_name != "" ? module.aws_infra.app_infra_ssh_privkey : data.aws_key_pair.user_keypair[0].key_name}"
+  # keypair_name = "${var.keypair_name != "" ? module.aws_infra.aws_key_pair : data.aws_key_pair.user_keypair[0].id}"
+  # private_key = "${var.keypair_name != "" ? module.aws_infra.aws_key_pair.id : data.aws_key_pair.user_keypair[0].id}"
 }
 
 module "aws_infra" {
@@ -83,7 +84,6 @@ module "aws_infra" {
   aws_instance_types = local.aws_instance_types
   vpc_id = var.vpc_id
   igw_id = var.igw_id
-  keypair_name = var.keypair_name
 }
 
 module "boundary_worker" {
@@ -94,7 +94,7 @@ module "boundary_worker" {
   vpc_id = var.vpc_id
   aws_ami = module.aws_infra.aws_ami_ubuntu
   aws_public_secgroup_id = module.aws_infra.aws_secgroup_public_id
-  app_infra_ssh_privkey = local.keypair
+  app_infra_ssh_privkey = module.aws_infra.app_infra_ssh_privkey
   boundary_worker_instance_type = var.aws_boundary_worker_instance_type
   boundary_worker_subnet_id = module.aws_infra.aws_subnet_public_id
   boundary_cluster_admin_url = var.boundary_cluster_admin_url
@@ -109,7 +109,7 @@ module "postgres" {
   pg_instance_type = var.aws_postgres_node_instance_type
   pg_subnet_id = module.aws_infra.aws_subnet_private_id
   pg_secgroup_id = module.aws_infra.aws_secgroup_private_id
-  pg_ssh_keypair = local.keypair
+  pg_ssh_keypair = module.aws_infra.aws_ssh_keypair_app_infra
 }
 
 module "k8s_cluster" {
@@ -126,7 +126,7 @@ module "k8s_cluster" {
   k8s_secgroup_id = module.aws_infra.aws_secgroup_private_id
   k8s_boundary_worker_lb_subnet_id = module.aws_infra.aws_subnet_public_id
   k8s_boundary_worker_lb_secgroup_id = module.aws_infra.aws_secgroup_public_id
-  k8s_ssh_keypair = local.keypair #module.aws_infra.aws_ssh_keypair_app_infra
+  k8s_ssh_keypair = module.aws_infra.aws_ssh_keypair_app_infra
   k8s_nodeport_lb_vpc = var.vpc_id
 }
 
@@ -139,7 +139,7 @@ module "vault_server" {
   vault_instance_type = var.aws_vault_node_instance_type
   vault_subnet_id = module.aws_infra.aws_subnet_private_id
   vault_secgroup_id = module.aws_infra.aws_secgroup_private_id
-  vault_ssh_keypair = local.keypair #module.aws_infra.aws_ssh_keypair_app_infra
+  vault_ssh_keypair = module.aws_infra.aws_ssh_keypair_app_infra
   vault_lb_vpc = var.vpc_id
   create_postgres = var.create_postgres
   postgres_server = module.postgres.dns

@@ -7,3 +7,6 @@
 Complete
 - add ability to specify a keypair
 - refactor direct resourse access from IP allow list / workstation IP
+
+
+issue: some are priv key and some are the keypair

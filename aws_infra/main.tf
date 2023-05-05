@@ -28,7 +28,6 @@ locals {
 }
 
 resource "tls_private_key" "aws_infra_ssh_key" {
-  # count = "${var.keypair_name != "" ? 1 : 0}"
   algorithm = "ED25519"
 }
 
