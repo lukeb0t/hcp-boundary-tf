@@ -25,3 +25,7 @@ variable "aws_instance_types" {
 variable "vpc_id" {
   type = string
 }
+
+variable "igw_id" {
+  type = string
+}

@@ -80,6 +80,7 @@ module "aws_infra" {
   aws_region = var.aws_region
   aws_instance_types = local.aws_instance_types
   vpc_id = var.vpc_id
+  igw_id = var.igw_id
 }
 
 # module "boundary_worker" {

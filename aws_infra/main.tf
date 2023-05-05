@@ -96,9 +96,9 @@ resource "aws_security_group" "boundary_demo_private" {
   }
 }
 
-resource "aws_internet_gateway" "boundary_demo" {
-  vpc_id = var.vpc_id
-}
+# resource "aws_internet_gateway" "boundary_demo" {
+#   vpc_id = var.vpc_id
+# }
 
 resource "aws_eip" "boundary_demo_nat_gw" {
  # depends_on = [aws_internet_gateway.boundary_demo]
@@ -115,7 +115,7 @@ resource "aws_route_table" "boundary_demo_public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.boundary_demo.id
+    gateway_id = var.igw_id
   }
 }
 

@@ -64,5 +64,9 @@ variable "boundary_admin_pw" {
   type = string
 }
 
+variable "igw_id" {
+  type = string
+}
+
 variable "TFC_WORKSPACE_NAME" {}
 variable "TFC_WORKSPACE_SLUG" {}
